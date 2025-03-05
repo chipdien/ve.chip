@@ -1,0 +1,6 @@
+{
+    "require": {
+        "aws/aws-sdk-php": "^3.340",
+        "catfan/medoo": "^2.1"
+    }
+}
