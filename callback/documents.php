@@ -258,7 +258,7 @@ try {
     <form action="<?php echo $actionUrl; ?>" method="post" enctype="multipart/form-data">
         Select file to upload:
         <input type="file" name="fileToUpload[]" id="fileToUpload" multiple>
-        <input type="hidden" name="ckeypost" value="GGvj7stvFOg7rtj5J7ySz1ikToHRLP0v">
+        <input type="hidden" name="ckeypost" value="<?php echo C_KEY_POST; ?>">
         <input type="submit" value="Upload File" name="submit">
     </form>
     <?php } ?>
@@ -272,7 +272,7 @@ try {
                 <?php if (isset($_GET['status']) && $_GET['status']=='0') { ?>
                 <form action="<?php echo $actionUrl; ?>" method="post" style="display:inline;">
                     <input type="hidden" name="action" value="delete">
-                    <input type="hidden" name="ckeypost" value="GGvj7stvFOg7rtj5J7ySz1ikToHRLP0v">
+                    <input type="hidden" name="ckeypost" value="<?php echo C_KEY_POST; ?>">
                     <input type="hidden" name="fileToDelete" value="<?php echo htmlspecialchars($file['key']); ?>">
                     <button type="submit" onclick="return confirm('Are you sure you want to delete this file?');">Delete</button>
                 </form>
