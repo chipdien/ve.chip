@@ -182,3 +182,17 @@ function url(string $pageName, array $params = []): string
 
     return $baseUrl;
 }
+
+function hasRole(string $roleName): bool 
+{
+    global $user;
+    if (!isset($user['roles']) || !is_array($user['roles'])) {
+        return false;
+    }
+    foreach ($user['roles'] as $role) {
+        if (isset($role['name']) && $role['name'] === $roleName) {
+            return true;
+        }
+    }
+    return false;
+}
