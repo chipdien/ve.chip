@@ -31,6 +31,8 @@ $error_map = [
     'expired_token' => 'Liên kết đã hết hạn. Vui lòng yêu cầu một liên kết mới.'
 ];
 
+$url_redirect = $_SESSION['return_to'] ?? 'index.php';
+
 // 1. Xử lý đăng nhập bằng Magic Link (từ email)
 if (isset($_GET['token'])) {
     $token = $_GET['token'];
@@ -38,7 +40,7 @@ if (isset($_GET['token'])) {
 
     if (is_array($result)) {
         $_SESSION['user'] = $result;
-        header('Location: index.php');
+        header('Location: ' . $url_redirect);
         exit;
     } else {
         $message = $error_map[$result] ?? 'Đã xảy ra lỗi không xác định. Vui lòng thử lại.';
@@ -64,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $result = $authService->loginWithPortalPassword($email, $password, $rememberMe);
             if (is_array($result)) {
                 $_SESSION['user'] = $result;
-                header('Location: index.php');
+                header('Location: ' . $url_redirect);
                 exit;
             } else {
                 $message = 'Email hoặc mật khẩu không chính xác.';
@@ -87,8 +89,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 // Lưu thông tin user và token vào session
                 $_SESSION['user'] = $result['user'];
                 $_SESSION['nocobase_token'] = $result['token'];
-                
-                header('Location: index.php');
+
+                header('Location: ' . $url_redirect);
                 exit;
             } else {
                 $message = 'Tài khoản hoặc mật khẩu Nocobase không chính xác.';

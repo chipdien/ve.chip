@@ -20,7 +20,8 @@ if (!isset($_SESSION['user']) && isset($_COOKIE['remember_me'])) {
 
 // Kiểm tra lại lần nữa, nếu vẫn chưa đăng nhập thì chuyển hướng
 if (!isset($_SESSION['user'])) {
-    header('Location: login.php');
+    $_SESSION['return_to'] = $_SERVER['REQUEST_URI'];
+    header('Location: /login.php');
     exit;
 }
 

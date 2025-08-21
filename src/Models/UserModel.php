@@ -4,10 +4,10 @@ namespace App\Models;
 class UserModel extends BaseModel {
     protected $table = 'users';
 
-    public function find(int $userId, array $columns = ['id', 'nickName', 'email'])
-    {
-        return $this->db->get($this->table, $columns, ['id' => $userId]);
-    }
+    // public function find(int $userId, array $columns = ['id', 'nickName', 'email'])
+    // {
+    //     return $this->db->get($this->table, $columns, ['id' => $userId]);
+    // }
 
     /**
      * Tìm một người dùng dựa trên địa chỉ email.

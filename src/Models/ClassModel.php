@@ -11,9 +11,9 @@ class ClassModel extends BaseModel {
      * @param array $columns
      * @return array|null
      */
-    public function find(int $classId, array $columns = ['id', 'code']): ?array {
-        return $this->db->get($this->table, $columns, ['id' => $classId]);
-    }
+    // public function find(int $classId, array $columns = ['id', 'code']): ?array {
+    //     return $this->db->get($this->table, $columns, ['id' => $classId]);
+    // }
 
     /**
      * Tìm thông tin lớp học và JOIN với thông tin cơ sở.

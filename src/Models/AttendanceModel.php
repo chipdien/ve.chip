@@ -69,10 +69,10 @@ class AttendanceModel extends BaseModel {
      * @param array $data
      * @return bool
      */
-    public function update(array $where, array $data): bool {
-        $statement = $this->db->update($this->table, $data, $where);
-        return $statement->rowCount() > 0;
-    }
+    // public function update(array $where, array $data): bool {
+    //     $statement = $this->db->update($this->table, $data, $where);
+    //     return $statement->rowCount() > 0;
+    // }
 
     /**
      * Lấy dữ liệu điểm danh cho một danh sách các ca học.

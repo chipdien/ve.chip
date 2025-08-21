@@ -137,7 +137,8 @@ class StudentModel extends BaseModel {
     public function getEnrolledStudentsNotInList(int $classId, array $excludedIds): array {
         $where = [
             'edu_student_class.class_id' => $classId,
-            'edu_student_class.status' => 'enroll'
+            'edu_student_class.status' => 'enroll',
+            'ORDER' => ['students.first_name' => 'ASC', 'students.last_name' => 'ASC']
         ];
 
         if (!empty($excludedIds)) {
@@ -148,7 +149,8 @@ class StudentModel extends BaseModel {
             '[>]students' => ['student_id' => 'id']
         ], [
             'students.id',
-            'students.full_name'
+            'students.full_name',
+            'students.dob',
         ], $where) ?: [];
     }
 

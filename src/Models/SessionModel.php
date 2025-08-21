@@ -11,9 +11,9 @@ class SessionModel extends BaseModel {
      * @param array $columns
      * @return array|null
      */
-    public function find(int $sessionId, array $columns = ['class_id', 'date']): ?array {
-        return $this->db->get($this->table, $columns, ['id' => $sessionId]);
-    }
+    // public function find(int $sessionId, array $columns = ['class_id', 'date']): ?array {
+    //     return $this->db->get($this->table, $columns, ['id' => $sessionId]);
+    // }
 
     /**
      * Lấy tất cả các ca học của một lớp trong một ngày cụ thể.
