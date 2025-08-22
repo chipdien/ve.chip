@@ -47,6 +47,12 @@ $parsedown = new Parsedown();
     <title>Thông báo Điểm Khảo sát - Lớp <?= htmlspecialchars($test_info['class_code']) ?></title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js"></script>
+    <!-- Nhúng extension auto-render để tự động tìm và hiển thị công thức -->
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js"></script>
+
     <style>
         body { font-family: 'Inter', sans-serif, 'Times New Roman', Times, serif; font-size: 13pt; color: #000; background-color: #f0f0f0; }
         .page { width: 21cm; min-height: 29.7cm; padding: 1cm 1cm; margin: 1cm auto; background: white; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
@@ -64,7 +70,7 @@ $parsedown = new Parsedown();
 <button class="print-button" onclick="window.print()">In Báo cáo</button>
 
 <div class="page">
-    <table class="w-full border-b-2 border-black pb-2">
+    <table class="w-full border-b-2 border-green-600 pb-2">
         <tr>
             <td style="width: 30%; vertical-align: top;">
                 <img src="https://vietelite.edu.vn/wp-content/uploads/2022/06/logo-vietelite-xanh-768x364.png" alt="VietElite Logo" style="height: 80px;">
@@ -138,5 +144,16 @@ $parsedown = new Parsedown();
     </div>
 </div>
 
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Hàm này sẽ tự động tìm tất cả các công thức toán trong trang và hiển thị chúng
+        renderMathInElement(document.body, {
+            delimiters: [
+                {left: "$$", right: "$$", display: true}, // Dành cho $$...$$ (block)
+                {left: "$", right: "$", display: false}    // Dành cho $...$ (inline)
+            ]
+        });
+    });
+</script>
 </body>
 </html>
