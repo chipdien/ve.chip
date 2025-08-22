@@ -87,6 +87,7 @@ function format_avatar_url(?string $avatar_path, string $image_text = 'Avatar', 
     return $s3_base_url . '/' . ltrim($avatar_path, '/');
 }
 
+/* Function cũ, không tương thích với ký tự UTF8 như Đ Â ....
 function getAcronym($fullName) {
     $words = explode(" ", $fullName); // Tách chuỗi thành mảng các từ dựa trên dấu cách
     $acronym = "";
@@ -95,6 +96,62 @@ function getAcronym($fullName) {
             $acronym .= strtoupper(substr($word, 0, 1)); // Lấy chữ cái đầu tiên của mỗi từ và chuyển thành chữ hoa
         }
     }
+    return $acronym;
+}
+*/
+
+function getAcronym($fullName) {
+    $vietnamese_chars = array(
+        'à', 'á', 'ạ', 'ả', 'ã', 'â', 'ầ', 'ấ', 'ậ', 'ẩ', 'ẫ', 'ă', 'ằ', 'ắ', 'ặ', 'ẳ', 'ẵ',
+        'è', 'é', 'ẹ', 'ẻ', 'ẽ', 'ê', 'ề', 'ế', 'ệ', 'ể', 'ễ',
+        'ì', 'í', 'ị', 'ỉ', 'ĩ',
+        'ò', 'ó', 'ọ', 'ỏ', 'õ', 'ô', 'ồ', 'ố', 'ộ', 'ổ', 'ỗ', 'ơ', 'ờ', 'ớ', 'ợ', 'ở', 'ỡ',
+        'ù', 'ú', 'ụ', 'ủ', 'ũ', 'ư', 'ừ', 'ứ', 'ự', 'ử', 'ữ',
+        'ỳ', 'ý', 'ỵ', 'ỷ', 'ỹ',
+        'đ', 'Đ',
+        'À', 'Á', 'Ạ', 'Ả', 'Ã', 'Â', 'Ầ', 'Ấ', 'Ậ', 'Ẩ', 'Ẫ', 'Ă', 'Ằ', 'Ắ', 'Ặ', 'Ẳ', 'Ẵ',
+        'È', 'É', 'Ẹ', 'Ẻ', 'Ẽ', 'Ê', 'Ề', 'Ế', 'Ệ', 'Ể', 'Ễ',
+        'Ì', 'Í', 'Ị', 'Ỉ', 'Ĩ',
+        'Ò', 'Ó', 'Ọ', 'Ỏ', 'Õ', 'Ô', 'Ồ', 'Ố', 'Ộ', 'Ổ', 'Ỗ', 'Ơ', 'Ờ', 'Ớ', 'Ợ', 'Ở', 'Ỡ',
+        'Ù', 'Ú', 'Ụ', 'Ủ', 'Ũ', 'Ư', 'Ừ', 'Ứ', 'Ự', 'Ử', 'Ữ',
+        'Ỳ', 'Ý', 'Ỵ', 'Ỷ', 'Ỹ'
+    );
+    
+    $non_vietnamese_chars = array(
+        'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a',
+        'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e',
+        'i', 'i', 'i', 'i', 'i',
+        'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o',
+        'u', 'u', 'u', 'u', 'u', 'u', 'u', 'u', 'u', 'u', 'u',
+        'y', 'y', 'y', 'y', 'y',
+        'd', 'D',
+        'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A',
+        'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E',
+        'I', 'I', 'I', 'I', 'I',
+        'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O',
+        'U', 'U', 'U', 'U', 'U', 'U', 'U', 'U', 'U', 'U', 'U',
+        'Y', 'Y', 'Y', 'Y', 'Y'
+    );
+    // 1. Chuyển đổi chuỗi sang dạng chuẩn hóa để loại bỏ dấu
+    // $normalizedString = Normalizer::normalize($fullName, Normalizer::FORM_NFD);
+    // 2. Loại bỏ các ký tự dấu và các ký tự không phải chữ cái
+    // $normalizedString = preg_replace('/[^\p{L}\s]/u', '', $normalizedString);
+    
+    $normalizedString = str_replace($vietnamese_chars, $non_vietnamese_chars, $fullName);
+
+    // 3. Tách chuỗi thành mảng các từ
+    $words = explode(" ", $normalizedString);
+    $acronym = "";
+
+    // 4. Lấy chữ cái đầu của mỗi từ, chuyển thành chữ hoa và ghép lại
+    foreach ($words as $word) {
+        // Đảm bảo từ không rỗng sau khi explode
+        if (!empty($word)) {
+            $firstCharacter = mb_substr($word, 0, 1, 'UTF-8');
+            $acronym .= mb_strtoupper($firstCharacter, 'UTF-8');
+        }
+    }
+
     return $acronym;
 }
 
