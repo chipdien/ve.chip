@@ -124,4 +124,43 @@ abstract class BaseModel {
     }
 
 
+    /**
+     * Finds and updates a record based on conditions, or creates a new one if not found.
+     *
+     * @param array $where The conditions to find the record (e.g., ['user_id' => 1, 'date' => '2025-08-25']).
+     * @param array $data The data to be inserted or updated.
+     * @return int|false Returns the ID of the updated/created record or false on failure.
+     */
+    public function updateOrCreateBy(array $where, array $data) {
+        if (empty($where) || !is_array($where) || empty($data) || !is_array($data)) {
+            return false;
+        }
+
+        // print_r($where);
+        // print_r($data);
+        // print_r($this->table);
+        // die();
+
+        // Bước 1: Kiểm tra xem bản ghi đã tồn tại chưa
+        $isExists = $this->db->get($this->table, ['id'], $where);
+
+        if ($isExists) {
+            // Bước 2a: Nếu bản ghi tồn tại, thực hiện cập nhật
+            $result = $this->db->update($this->table, $data, $where);
+            return $result->rowCount();;
+        } else {
+            // Bước 2b: Nếu bản ghi không tồn tại, thực hiện tạo mới
+            $this->db->insert($this->table, array_merge($where, $data));
+            return $this->db->id();
+        }
+
+        // Bước 3: Trả về ID của bản ghi
+        // return $result; // PDOStatement object.
+    }
+
+
+    public function query($sql, $params = []) {
+        return $this->db->query($sql, $params)->fetchAll();
+    }
+
 }

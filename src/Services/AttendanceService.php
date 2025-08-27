@@ -239,7 +239,7 @@ class AttendanceService
         if (in_array($field, $attendanceFields)) {
             // Cập nhật bảng điểm danh
             $data = ['attendance' => $value, 'user_id' => $userId];
-            return $this->attendanceModel->update($where, $data);
+            return $this->attendanceModel->updateBy($where, $data);
         }
         
         if (in_array($field, $academicResultFields)) {

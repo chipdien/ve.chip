@@ -1,0 +1,65 @@
+/* File: /teacher/assets/css/style.css */
+
+body { 
+    font-family: 'Inter', sans-serif; 
+}
+
+main { 
+    padding-bottom: 80px; 
+}
+
+[x-cloak] { 
+    display: none !important; 
+}
+
+.bottom-nav-link.active { 
+    color: #16a34a; /* green-600 */
+}
+
+/* Hide scrollbar for slider */
+.no-scrollbar::-webkit-scrollbar { 
+    display: none; 
+}
+.no-scrollbar { 
+    -ms-overflow-style: none; 
+    scrollbar-width: none; 
+}
+
+/* --- Skeleton Loading --- */
+.skeleton {
+    background-color: #e5e7eb; /* gray-200 */
+    border-radius: 0.5rem; /* rounded-lg */
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: .5;
+  }
+}
+
+.skeleton-text {
+    height: 1rem; /* h-4 */
+    width: 75%;
+}
+.skeleton-title {
+    height: 1.75rem; /* h-7 */
+    width: 40%;
+    margin-bottom: 1rem;
+}
+.skeleton-card {
+    height: 6rem; /* h-24 */
+}
+.skeleton-avatar {
+    width: 2.5rem; /* w-10 */
+    height: 2.5rem; /* h-10 */
+    border-radius: 9999px; /* rounded-full */
+}
+
+
+.autosave-field:focus { box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.4); }
+.flash-success { transition: background-color 0.1s ease-in-out; background-color: #dcfce7 !important; }
+.vditor { border-radius: 0.375rem; border: 1px solid #d1d5db; }

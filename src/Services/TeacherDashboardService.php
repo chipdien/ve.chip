@@ -38,7 +38,7 @@ class TeacherDashboardService
      */
     public function getDashboardData(array $user): array
     {
-        $teacherId = $user['teacher_id'];
+        $teacherId = $user['teacher']['id'];
         $today = date('Y-m-d');
         $thirtyDaysAgo = date('Y-m-d', strtotime('-30 days'));
 
