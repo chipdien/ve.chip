@@ -297,11 +297,15 @@ class TeacherDataService
 
         // 4. Lấy danh sách tài liệu 
         $s3service = new S3StorageService();
-        $documents = $s3service->getClassDocuments(trim($classInfo['code']));
-        // $documents = [
-        //     ['id' => 1, 'name' => 'Course_Syllabus.pdf', 'size' => '1.2 MB'],
-        //     ['id' => 2, 'name' => 'Vocabulary_List.docx', 'size' => '850 KB']
-        // ];
+        $documents = $s3service->getClassDocuments(trim($classInfo['code'])) ?? [];
+        uasort($documents, function ($a, $b) {
+            // Chuyển đổi chuỗi ngày thành timestamp để so sánh chính xác
+            $timeA = strtotime($a['session_date']);
+            $timeB = strtotime($b['session_date']);
+            
+            // So sánh để sắp xếp giảm dần (DESC)
+            return $timeB <=> $timeA;
+        });
 
         return [
             'info' => $classInfo,
