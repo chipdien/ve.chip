@@ -3,6 +3,8 @@
 
 namespace App\Services;
 
+use App\Models\UserModel;
+
 /**
  * AuthNocobaseService
  * * Dịch vụ này xử lý logic xác thực người dùng thông qua Nocobase API.
@@ -15,6 +17,8 @@ class AuthNocobaseService
      */
     private $apiService;
 
+    protected $userModel;
+
     /**
      * Hàm khởi tạo.
      *
@@ -23,6 +27,7 @@ class AuthNocobaseService
     public function __construct(ApiService $apiService)
     {
         $this->apiService = $apiService;
+        $this->userModel = new UserModel();
     }
 
     /**
@@ -36,7 +41,7 @@ class AuthNocobaseService
      * @param string $password Mật khẩu của người dùng.
      * @return array|false Trả về một mảng chứa thông tin ['user' => ..., 'token' => ...] nếu thành công, ngược lại trả về false.
      */
-    public function login(string $email, string $password): ?array
+    public function login(string $email, string $password, bool $rememberMe = false): ?array
     {
         // --- Bước 1: Gọi API để đăng nhập và lấy token ---
         
@@ -85,10 +90,36 @@ class AuthNocobaseService
         // Thêm một định danh để biết user đăng nhập bằng phương thức nào
         $final_user_data['auth_method'] = 'nocobase';
 
+        if ($rememberMe) {
+            $this->createRememberMeToken($loginResult['data']['user']['id']);
+        }
+        
+
         // Trả về kết quả cuối cùng bao gồm thông tin user đầy đủ và token
         return [
             'user' => $final_user_data,
             'token' => $token
         ];
+    }
+
+
+    /**
+     * Tạo và lưu token "Ghi nhớ" vào CSDL và cookie.
+     */
+    private function createRememberMeToken(int $userId)
+    {
+        $selector = bin2hex(random_bytes(16));
+        $validator = bin2hex(random_bytes(32));
+        $hashedValidator = hash('sha256', $validator);
+        $expiresAt = (new \DateTime('+30 days'))->format('Y-m-d H:i:s');
+
+        $this->userModel->createAuthToken($userId, $selector, $hashedValidator, $expiresAt);
+
+        setcookie(
+            'remember_me',
+            $selector . ':' . $validator,
+            time() + (30 * 24 * 60 * 60), // 30 ngày
+            '/' // Áp dụng cho toàn bộ domain
+        );
     }
 }
