@@ -18,7 +18,7 @@
   "start_url": "/index.php",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#16a34a",
+  "theme_color": "#ffffff",
   "scope": "/",
   "description": "Ứng dụng hỗ trợ giáo viên quản lý lớp học và ca dạy."
 }

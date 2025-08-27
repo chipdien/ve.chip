@@ -52,9 +52,30 @@ document.addEventListener('alpine:init', () => {
             this.route();
             console.log('Initial route:', window.location.hash);
 
+            this.initPullToRefresh();
+
             setTimeout(() => {
                 this.$store.app.ui.isInitialLoading = false;
             }, 100);
+        },
+
+
+        // Khởi tạo và cấu hình thư viện PullToRefresh.
+        initPullToRefresh() {
+            PullToRefresh.init({
+                mainElement: 'body',
+                onRefresh: () => {
+                    // Khi người dùng kéo, phát ra một sự kiện toàn cục
+                    // Các component con sẽ lắng nghe sự kiện này
+                    window.dispatchEvent(new CustomEvent('refresh-page-data'));
+                },
+                // Tùy chỉnh giao diện cho phù hợp với app
+                iconArrow: '&#8675;',
+                iconRefreshing: '&#128260;',
+                instructionsPullToRefresh: 'Kéo xuống để làm mới',
+                instructionsReleaseToRefresh: 'Thả ra để làm mới',
+                instructionsRefreshing: 'Đang tải lại...',
+            });
         },
 
         route() {

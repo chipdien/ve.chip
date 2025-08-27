@@ -46,9 +46,9 @@ $initialDataJson = json_encode($initialAppData);
 
     <!-- Cấu hình cho Progressive Web App (PWA) -->
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#16a34a">
+    <meta name="theme-color" content="#ffffff">
     <!-- Cho iOS -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="GV App">
 
@@ -106,6 +106,7 @@ $initialDataJson = json_encode($initialAppData);
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js"></script>
     
+    <link rel="stylesheet" href="https://unpkg.com/pulltorefreshjs@0.1.22/dist/index.css">
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <!-- Khởi tạo component `app` chính, đóng vai trò điều phối routing -->
@@ -195,6 +196,7 @@ $initialDataJson = json_encode($initialAppData);
     </script>
 
     <!-- AlpineJS & App Scripts (sử dụng type="module") -->
+    <script src="https://unpkg.com/pulltorefreshjs@0.1.22/dist/index.umd.js"></script>
     <script src="https://unpkg.com/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
     <script src="https://unpkg.com/@alpinejs/intersect@3.x.x/dist/cdn.min.js"></script>
     <script src="assets/js/helpers.js"></script>

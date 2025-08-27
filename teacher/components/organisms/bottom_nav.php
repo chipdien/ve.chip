@@ -2,7 +2,7 @@
 // File: /teacher/components/organisms/bottom_nav.php
 // Phiên bản cuối cùng, tuân thủ quy chuẩn dự án.
 ?>
-<nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg z-20">
+<nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg z-20 pb-4">
     <div class="container mx-auto flex justify-around">
         
         <!-- Dashboard -->
