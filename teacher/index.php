@@ -179,9 +179,26 @@ $initialDataJson = json_encode($initialAppData);
                     <?php include __DIR__ . '/pages/student_details.php'; ?>
                 </div>
             </template>
+
+            <template x-if="$store.app.routing.page === 'notification_settings'">
+                <div x-data="notificationSettings">
+                    <?php include __DIR__ . '/pages/notification_settings.php'; ?>
+                </div>
+            </template>
         </div>
 
     </main>
+
+    <!-- (MỚI) Popup xin quyền nhận thông báo -->
+    <div x-show="showPermissionPopup" x-transition.enter.duration.300ms x-transition.leave.duration.300ms
+         class="fixed bottom-24 right-4 bg-white p-4 rounded-lg shadow-lg max-w-sm">
+        <h4 class="font-bold">Nhận thông báo quan trọng?</h4>
+        <p class="text-sm text-gray-600 mt-1">Cho phép chúng tôi gửi cho bạn các cập nhật về lịch dạy và lớp học.</p>
+        <div class="mt-3 flex space-x-2">
+            <button @click="showPermissionPopup = false" class="flex-1 px-3 py-1 text-sm bg-gray-200 rounded">Để sau</button>
+            <button @click="handlePermissionRequest()" class="flex-1 px-3 py-1 text-sm bg-green-600 text-white rounded">Cho phép</button>
+        </div>
+    </div>
 
     <!-- Bottom Navigation (Organism) -->
     <?php include __DIR__ . '/components/organisms/bottom_nav.php'; ?>

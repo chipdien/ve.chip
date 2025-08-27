@@ -13,6 +13,8 @@ import sessionDetailsComponent from './components/sessionDetails.js';
 
 import studentDetailsComponent from './components/studentDetails.js';
 
+import notificationManager from './services/notificationManager.js';
+import notificationSettingsComponent from './components/notificationSettings.js';
 
 
 document.addEventListener('alpine:init', () => {
@@ -39,13 +41,17 @@ document.addEventListener('alpine:init', () => {
 
     Alpine.data('studentDetails', studentDetailsComponent);
 
+    Alpine.data('notificationSettings', notificationSettingsComponent);
+
     /**
      * Component 'app' chính, gắn vào thẻ <body>.
      * Nhiệm vụ chính là xử lý routing dựa trên URL hash.
      * Nó đọc và thay đổi trạng thái trong store, các component con sẽ tự động phản ứng theo.
      */
     Alpine.data('app', () => ({
-        init() {
+        showPermissionPopup: false,
+
+        async init() {
             // Lắng nghe sự kiện back/forward của trình duyệt
             window.addEventListener('hashchange', () => this.route());
             // Xử lý route ban đầu khi tải trang
@@ -57,6 +63,14 @@ document.addEventListener('alpine:init', () => {
             setTimeout(() => {
                 this.$store.app.ui.isInitialLoading = false;
             }, 100);
+
+            await notificationManager.init();
+            // Nếu chưa cấp quyền, hiển thị popup sau 2 giây
+            if (notificationManager.permission === 'default') {
+                setTimeout(() => {
+                    this.showPermissionPopup = true;
+                }, 2000);
+            }
         },
 
 
@@ -78,11 +92,17 @@ document.addEventListener('alpine:init', () => {
             });
         },
 
+        // Hàm để xử lý việc xin quyền từ popup
+        async handlePermissionRequest() {
+            await notificationManager.requestPermission();
+            this.showPermissionPopup = false; // Ẩn popup sau khi người dùng chọn
+        },
+
         route() {
             const hash = window.location.hash.substring(1);
             const [page, id, subPage] = hash.split('/');
-            
-            const validPages = ['dashboard', 'classes', 'class_details', 'weekly_schedule', 'session', 'session_details', 'student_details'];
+
+            const validPages = ['dashboard', 'classes', 'class_details', 'weekly_schedule', 'session', 'session_details', 'student_details', 'notification_settings'];
             const currentPage = validPages.includes(page) ? page : 'dashboard';
             console.log('Routing to:', { currentPage, id, subPage });
             // Cập nhật trạng thái routing trong store
